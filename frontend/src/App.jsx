@@ -5,7 +5,11 @@ import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
+// src/App.jsx
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import UserProfile from "./pages/UserProfile";
 
+const App = () => {
   return (
     <>
       <div>
@@ -31,5 +35,13 @@ function App() {
     </>
   )
 }
+    <Router>
+      <Routes>
+        <Route path="/profile/:id" element={<UserProfile />} />
+      </Routes>
+    </Router>
+  );
+};
 
 export default App
+export default App;

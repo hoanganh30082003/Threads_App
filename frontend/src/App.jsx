@@ -2,16 +2,12 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-
-function App() {
-  const [count, setCount] = useState(0)
-// src/App.jsx
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import UserProfile from "./pages/UserProfile";
+function App() {
+  const [count, setCount] = useState(0)
+// src/App.jsx
 
 const App = () => {
   return (
@@ -78,8 +74,6 @@ function App() {
         <Route path="/profile/:id" element={<UserProfile />} />
       </Routes>
     </Router>
-  );
 };
 
-export default App
 export default App;

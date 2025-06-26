@@ -1,33 +1,50 @@
-// src/server.js
+import path from "path";
 import express from "express";
 import dotenv from "dotenv";
-import cors from "cors";
-import connectDB from "../config/db.js";
-import router from "./routes/index.js";
+import connectDB from "./db/connectDB.js";
+import cookieParser from "cookie-parser";
+import userRoutes from "./routes/userRoutes.js";
+import postRoutes from "./routes/postRoutes.js";
+import messageRoutes from "./routes/messageRoutes.js";
+import { v2 as cloudinary } from "cloudinary";
+import { app, server } from "./socket/socket.js";
+import job from "./cron/cron.js";
 
 dotenv.config();
 
-// Kết nối MongoDB
 connectDB();
-app.use(cors());
-app.use(express.json());
+job.start();
 
-// Cấu hình CORS chính xác cho frontend ở cổng 5173
-app.use(
-  cors({
-    origin: "http://localhost:5173", // 👈 Cho phép từ FE
-    credentials: true, // Nếu bạn dùng cookie/token
-  })
-);
+const PORT = process.env.PORT || 5000;
+const __dirname = path.resolve();
 
-// Router
-app.use("/", router);
-
-// Khởi động server
-const PORT = process.env.PORT || 9999;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-  console.log(`🚀 Server is running at http://localhost:${PORT}`);
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export default app;
+// Middlewares
+app.use(express.json({ limit: "50mb" })); // To parse JSON data in the req.body
+app.use(express.urlencoded({ extended: true })); // To parse form data in the req.body
+app.use(cookieParser());
+
+// Routes
+app.use("/api/users", userRoutes);
+app.use("/api/posts", postRoutes);
+app.use("/api/messages", messageRoutes);
+
+// http://localhost:5000 => backend,frontend
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/frontend/dist")));
+
+  // react app
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+  });
+}
+
+server.listen(PORT, () =>
+  console.log(`Server started at http://localhost:${PORT}`)
+);

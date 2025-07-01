@@ -7,11 +7,13 @@ import {
 	replyToPost,
 	getFeedPosts,
 	getUserPosts,
+	getAllPosts,
 } from "../controller/postController.js";
 import protectRoute from "../middlewares/protectRoute.js";
 
 const router = express.Router();
 
+router.get("/", getAllPosts);
 router.get("/feed", protectRoute, getFeedPosts);
 router.get("/:id", getPost);
 router.get("/user/:username", getUserPosts);

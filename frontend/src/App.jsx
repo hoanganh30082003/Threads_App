@@ -5,6 +5,7 @@ import PostPage from "./pages/PostPage";
 import Header from "./components/Header";
 import HomePage from "./pages/HomePage";
 import AuthPage from "./pages/AuthPage";
+import CreatePost from "./components/CreatePost";
 import { useRecoilValue } from "recoil";
 import userAtom from "./atoms/userAtom";
 function App() {
@@ -26,7 +27,7 @@ function App() {
 							isAuthenticated ? (
 								<>
 									<UserPage />
-									{/* <CreatePost /> */}
+									<CreatePost />
 								</>
 							) : (
 								<UserPage />

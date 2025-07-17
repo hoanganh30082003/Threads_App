@@ -1,5 +1,6 @@
-const mongoose = require("mongoose");
-require('dotenv').config();
+import mongoose from "mongoose"
+import dotenv from 'dotenv';
+dotenv.config({ path: '../.env' }); // Đường dẫn từ backend/config/connectDB.js ra thư mục root
 const connectDB = async () => {
     try {
         await mongoose.connect(process.env.MONGO_URI);
@@ -9,5 +10,4 @@ const connectDB = async () => {
         process.exit(1);
     }
 }
-
-module.exports = connectDB
+export default connectDB;

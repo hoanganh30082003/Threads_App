@@ -13,24 +13,14 @@ const SuggestedUsers = () => {
 			setLoading(true);
 			try {
 				const res = await fetch("/api/users/suggested");
-				if (!res.ok) {
-					if (res.status === 401) {
-						// User not authenticated, set empty array
-						setSuggestedUsers([]);
-						return;
-					}
-					throw new Error(`HTTP error! status: ${res.status}`);
-				}
 				const data = await res.json();
 				if (data.error) {
 					showToast("Error", data.error, "error");
-					setSuggestedUsers([]);
 					return;
 				}
-				setSuggestedUsers(Array.isArray(data) ? data : []);
+				setSuggestedUsers(data);
 			} catch (error) {
 				showToast("Error", error.message, "error");
-				setSuggestedUsers([]);
 			} finally {
 				setLoading(false);
 			}

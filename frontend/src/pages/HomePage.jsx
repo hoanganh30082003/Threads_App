@@ -16,25 +16,15 @@ const HomePage = () => {
 			setPosts([]);
 			try {
 				const res = await fetch("/api/posts/feed");
-				if (!res.ok) {
-					if (res.status === 401) {
-						// User not authenticated, set empty posts
-						setPosts([]);
-						return;
-					}
-					throw new Error(`HTTP error! status: ${res.status}`);
-				}
 				const data = await res.json();
 				if (data.error) {
 					showToast("Error", data.error, "error");
-					setPosts([]);
 					return;
 				}
 				console.log(data);
-				setPosts(data || []);
+				setPosts(data);
 			} catch (error) {
 				showToast("Error", error.message, "error");
-				setPosts([]);
 			} finally {
 				setLoading(false);
 			}
@@ -53,7 +43,7 @@ const HomePage = () => {
 					</Flex>
 				)}
 
-				{Array.isArray(posts) && posts.map((post) => (
+				{posts.map((post) => (
 					<Post key={post._id} post={post} postedBy={post.postedBy} />
 				))}
 			</Box>

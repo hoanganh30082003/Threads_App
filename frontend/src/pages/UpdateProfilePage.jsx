@@ -15,16 +15,14 @@ import { useRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
 import usePreviewImg from "../hooks/usePreviewImg";
 import useShowToast from "../hooks/useShowToast";
-import { useNavigate } from "react-router-dom";
 
 export default function UpdateProfilePage() {
-	const navigate = useNavigate();
 	const [user, setUser] = useRecoilState(userAtom);
 	const [inputs, setInputs] = useState({
-		name: user?.name || "",
-		username: user?.username || "",
-		email: user?.email || "",
-		bio: user?.bio || "",
+		name: user.name,
+		username: user.username,
+		email: user.email,
+		bio: user.bio,
 		password: "",
 	});
 	const fileRef = useRef(null);
@@ -145,8 +143,7 @@ export default function UpdateProfilePage() {
 							w='full'
 							_hover={{
 								bg: "red.500",
-							}}					
-							onClick={() => navigate(`/${user.username}`)}
+							}}
 						>
 							Cancel
 						</Button>
@@ -168,5 +165,3 @@ export default function UpdateProfilePage() {
 		</form>
 	);
 }
-// console.log("User state:", user);
-// console.log("Navigating to:", `/${user?.username}`);
